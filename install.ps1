@@ -19,6 +19,5 @@ foreach ($valueName in $values.PSObject.Properties.Name) {
     if ($valueName -ne "(default)")
     {
         Remove-ItemProperty -Path $regPath -Name $valueName -ErrorAction SilentlyContinue
-        echo $valueName
     }
 }
