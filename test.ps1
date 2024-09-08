@@ -1,1 +1,1 @@
-$null = Show-MessageBox 'some message'
+echo "Pspspspsps"
